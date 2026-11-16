@@ -1,0 +1,183 @@
+/* ==========================================================
+   Signe-moi — styles
+   Palette : bleu glacier (fond), encre indigo, jaune "main"
+   ========================================================== */
+
+:root {
+  --bg: #e8edf8;
+  --panel: #ffffff;
+  --ink: #131a3d;
+  --ink-soft: #4b5380;
+  --indigo: #2a2fa0;
+  --sun: #ffc93c;
+  --ok: #138a5c;
+  --ko: #c0392b;
+  --radius: 18px;
+  --font-display: "Bricolage Grotesque", system-ui, sans-serif;
+  --font-body: "DM Sans", system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.55;
+}
+
+h1, h2 { font-family: var(--font-display); margin: 0; }
+
+/* ---------- Boutons ---------- */
+.btn {
+  font: 700 1rem var(--font-body);
+  border: 0;
+  border-radius: 999px;
+  padding: .8rem 1.6rem;
+  cursor: pointer;
+  transition: transform .15s, background .15s, opacity .15s;
+}
+.btn:focus-visible, .progress button:focus-visible { outline: 3px solid var(--sun); outline-offset: 3px; }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn--primary { background: var(--indigo); color: #fff; }
+.btn--primary:not(:disabled):hover { transform: translateY(-2px); }
+.btn--ghost { background: transparent; color: var(--indigo); border: 2px solid var(--indigo); padding: .55rem 1.1rem; }
+.btn--ghost:not(:disabled):hover { background: var(--indigo); color: #fff; }
+
+/* ---------- Écran d'autorisation ---------- */
+.gate {
+  position: fixed; inset: 0; z-index: 10;
+  display: grid; place-items: center;
+  background: rgba(19, 26, 61, .92);
+  padding: 1.5rem;
+}
+.gate.is-hidden { display: none; }
+.gate__box {
+  background: var(--panel);
+  max-width: 440px;
+  border-radius: var(--radius);
+  padding: 2rem;
+  text-align: center;
+}
+.gate__box h2 { font-size: 1.8rem; margin-bottom: .6rem; }
+.gate__box p { color: var(--ink-soft); margin: 0 0 1.4rem; }
+.gate__box .gate__error { color: var(--ko); margin: 1rem 0 0; font-weight: 500; }
+
+/* ---------- Hero ---------- */
+.hero {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem 2.5rem;
+}
+.hero h1 {
+  font-size: clamp(3rem, 9vw, 6rem);
+  font-weight: 800;
+  line-height: .95;
+  letter-spacing: -.03em;
+  color: var(--indigo);
+}
+.hero__lead { font-size: 1.3rem; max-width: 36ch; margin: 1rem 0 2rem; }
+.how { padding-left: 1.2rem; max-width: 60ch; }
+.how li { margin-bottom: .5rem; }
+.hero__tip {
+  display: inline-block;
+  background: var(--sun);
+  padding: .5rem 1rem;
+  border-radius: 10px;
+  font-weight: 500;
+}
+
+/* ---------- Zone d'entraînement ---------- */
+.trainer {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem 3rem;
+}
+.trainer__top { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
+.status { margin: 0; color: var(--ink-soft); }
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  background: var(--panel);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+}
+@media (max-width: 760px) { .split { grid-template-columns: 1fr; } }
+
+/* ---------- Carte qui se retourne ---------- */
+.card { perspective: 1000px; width: 100%; aspect-ratio: 4 / 3; }
+.card__inner {
+  position: relative; width: 100%; height: 100%;
+  transform-style: preserve-3d;
+  transition: transform .7s cubic-bezier(.3, .8, .3, 1);
+}
+.card.is-flipped .card__inner { transform: rotateY(180deg); }
+.card__face {
+  position: absolute; inset: 0;
+  backface-visibility: hidden;
+  border-radius: var(--radius);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: .5rem; padding: 1rem; text-align: center;
+}
+.card__front { background: var(--ink); color: #fff; }
+.card__mark { font: 800 6rem/1 var(--font-display); color: var(--sun); }
+.card__sub { opacity: .8; }
+.card__back { background: var(--indigo); color: #fff; transform: rotateY(180deg); transition: background .3s; }
+.card.is-success .card__back { background: var(--ok); }
+.card__demo { display: flex; align-items: center; justify-content: center; gap: clamp(.8rem, 3vw, 2rem); width: 100%; }
+.card__letter { font: 800 clamp(5rem, 14vw, 8rem)/1 var(--font-display); }
+.card__sign {
+  height: clamp(130px, 22vw, 210px);
+  width: auto;
+  background: #fff;
+  border-radius: 14px;
+  padding: .5rem;
+  object-fit: contain;
+}
+.card__hint { max-width: 30ch; font-size: .95rem; opacity: .9; }
+
+.hold { height: 10px; background: #dfe3f3; border-radius: 99px; margin-top: 1rem; overflow: hidden; }
+.hold__bar { height: 100%; width: 0; background: var(--sun); transition: width .1s linear; }
+.feedback { min-height: 1.6em; margin: .6rem 0; font-weight: 700; }
+.feedback.ok { color: var(--ok); }
+.feedback.ko { color: var(--ko); }
+.nav { display: flex; gap: .6rem; flex-wrap: wrap; }
+
+/* ---------- Caméra ---------- */
+.cam {
+  position: relative; width: 100%; aspect-ratio: 4 / 3;
+  background: var(--ink); border-radius: var(--radius); overflow: hidden;
+}
+/* Effet miroir : plus naturel pour l'utilisateur */
+.cam video, .cam canvas {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; transform: scaleX(-1);
+}
+.cam__placeholder {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  color: #fff; opacity: .7; text-align: center; padding: 1rem;
+}
+.cam.is-on .cam__placeholder { display: none; }
+.detected { margin: .8rem 0 0; color: var(--ink-soft); }
+.detected strong { color: var(--ink); font-size: 1.2rem; }
+
+/* ---------- Progression ---------- */
+.progress { list-style: none; padding: 0; margin: 1.5rem 0 0; display: flex; flex-wrap: wrap; gap: .5rem; }
+.progress button {
+  width: 2.6rem; height: 2.6rem; border-radius: 10px; border: 2px solid #b9c0e0;
+  background: transparent; color: var(--ink-soft); font: 700 1rem var(--font-body); cursor: pointer;
+}
+.progress button:disabled { cursor: not-allowed; opacity: .6; }
+.progress button.is-done { background: var(--ok); border-color: var(--ok); color: #fff; opacity: 1; }
+.progress button.is-current { border-color: var(--indigo); color: var(--indigo); box-shadow: 0 0 0 3px var(--sun); }
+.progress button.is-done.is-current { color: #fff; }
+
+.foot { text-align: center; padding: 1rem 1.5rem 2.5rem; color: var(--ink-soft); font-size: .9rem; }
+.foot a { color: var(--indigo); }
+
+@media (prefers-reduced-motion: reduce) {
+  .card__inner, .hold__bar, .btn { transition: none; }
+}

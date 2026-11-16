@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Signe-moi — apprendre l'alphabet des signes</title>
+  <meta name="description" content="Apprends l'alphabet manuel avec ta webcam : l'application reconnaît ta main et valide chaque lettre.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ============ ÉCRAN D'AUTORISATION WEBCAM ============ -->
+  <div id="gate" class="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+    <div class="gate__box">
+      <h2 id="gate-title">Ta webcam, s'il te plaît</h2>
+      <p>L'application a besoin de ta caméra pour voir ta main et vérifier tes signes. Aucune image n'est envoyée ni enregistrée : tout reste dans ton navigateur.</p>
+      <button id="btn-allow" class="btn btn--primary" type="button">Autoriser la webcam</button>
+      <p id="gate-error" class="gate__error" role="alert" hidden></p>
+    </div>
+  </div>
+
+  <!-- ============ EN-TÊTE / EXPLICATION ============ -->
+  <header class="hero">
+    <h1>Signe-moi</h1>
+    <p class="hero__lead">Apprends l'alphabet manuel de la langue des signes, lettre après lettre, avec ta webcam.</p>
+
+    <ol class="how">
+      <li>Appuie sur <strong>Start</strong> : ta caméra s'allume à droite.</li>
+      <li>Une carte à gauche se retourne et révèle la lettre à signer.</li>
+      <li>Fais le signe devant la caméra et <strong>tiens-le environ une seconde</strong>.</li>
+      <li>Si le signe est juste, tu passes à la lettre suivante. Tu peux toujours revenir sur une lettre déjà réussie.</li>
+    </ol>
+    <p class="hero__tip">Conseil : place ta main bien dans le cadre, paume vers la caméra, avec une lumière correcte.</p>
+  </header>
+
+  <!-- ============ ZONE D'ENTRAÎNEMENT (ÉCRAN SCINDÉ) ============ -->
+  <main class="trainer" id="trainer">
+
+    <div class="trainer__top">
+      <button id="btn-start" class="btn btn--primary" type="button" disabled>Chargement du modèle…</button>
+      <p id="status" class="status" aria-live="polite">Initialisation…</p>
+    </div>
+
+    <div class="split">
+
+      <!-- Moitié gauche : carte -->
+      <section class="split__left" aria-label="Lettre à signer">
+        <div id="card" class="card" aria-live="polite">
+          <div class="card__inner">
+            <div class="card__face card__front">
+              <span class="card__mark">?</span>
+              <span class="card__sub" id="card-front-sub">Appuie sur Start</span>
+            </div>
+            <div class="card__face card__back">
+              <div class="card__demo">
+                <span class="card__letter" id="card-letter">A</span>
+                <img id="card-sign" class="card__sign" src="images/A.png" alt="Signe de la lettre A" width="200" height="300">
+              </div>
+              <span class="card__hint" id="card-hint"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hold" aria-hidden="true"><div id="hold-bar" class="hold__bar"></div></div>
+        <p id="feedback" class="feedback" aria-live="polite">&nbsp;</p>
+
+        <div class="nav">
+          <button id="btn-prev" class="btn btn--ghost" type="button" disabled>← Lettre précédente</button>
+          <button id="btn-next" class="btn btn--ghost" type="button" disabled>Lettre suivante →</button>
+        </div>
+      </section>
+
+      <!-- Moitié droite : caméra -->
+      <section class="split__right" aria-label="Ta caméra">
+        <div class="cam">
+          <video id="video" playsinline muted></video>
+          <canvas id="overlay"></canvas>
+          <div id="cam-placeholder" class="cam__placeholder">La caméra s'allumera ici</div>
+        </div>
+        <p class="detected">Je vois : <strong id="detected">—</strong></p>
+      </section>
+    </div>
+
+    <!-- Progression -->
+    <ul id="progress" class="progress" aria-label="Progression"></ul>
+  </main>
+
+  <footer class="foot">
+    <p>TP JavaScript — MMI · détection de main avec <a href="https://docs.ml5js.org/#/reference/handpose" target="_blank" rel="noopener">ml5.js handPose</a></p>
+  </footer>
+
+  <!-- Bibliothèque ml5.js (version figée), chargée avant notre script -->
+  <script src="https://unpkg.com/ml5@1.2.1/dist/ml5.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
